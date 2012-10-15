@@ -2,7 +2,7 @@
 ==============
 _პროექტი აქტიური დეველოპმენტის პროცესშია_
 
-პროექტის აღწერა განახლდება პროექტის მსვლელობის პარარელურად 
+პროექტის აღწერა განახლდება პროექტის მსვლელობის პარარელურად
 
 [DB Diagram](https://raw.github.com/cstprojects/movies-we-love/master/ProjectDescription/Movies%20We%20Love-diagram.png)
 
