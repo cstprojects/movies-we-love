@@ -1,10 +1,9 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: oto
- * Date: 10/16/12
- * Time: 1:18 AM
- *
- * this file implements functions that are responsible for login,logout and register activities
- */
+include("/../data/movies.php");
+include("/../lib/embed.php");
 
+$app->get('/movies', function () {
+  $movies = getmovies();
+
+  print  embed("/../public_html/templates/movies.tpl.php", array('vars' => $movies));
+});
