@@ -3,10 +3,7 @@
  * Implements RottenTomatoes API CLIENT functions
  */
 
-const api_url = 'http://api.rottentomatoes.com/api/public/v1.0/';
-const api_key = '8wu69vmaagyc2cge2a74m9tt'; // Rotten Tomatoes API key for auth.
-const path_to_templates = 'templates/';
-const main_path = '/movies-we-love/public_html/';
+include("db-interactions.php");
 
 
 /*
@@ -20,19 +17,31 @@ const main_path = '/movies-we-love/public_html/';
  * returns search results
  */
 
-function generate_rapi_endpoint($api_url, $api_key, $addition = "", $qparams = ""){
+function generate_rapi_endpoint($api_url, $api_key, $addition = "", $qparams = "") {
   $qparams['apikey'] = $api_key;
   $endpoint = $api_url . $addition . '?' . http_build_query($qparams);
   return $endpoint;
 }
 
 
+function get_movie_by_id($id) {
+  $movie = db_select_movie_by_id($id);
+  if ($movie) {
+    return $movie;
+  } else {
+    $endpoint = generate_rapi_endpoint(api_url, api_key, "movies/" . $id);
+    $rapi_result = file_get_contents($endpoint);
+    if ($rapi_result) {
 
-function get_movie_by_id($id){
-  $endpoint = generate_rapi_endpoint(api_url, api_key,"movies/" .$id);
-  $result = json_decode(file_get_contents($endpoint));
+      $movie = json_decode($rapi_result);
+      db_insert_movie($movie);
+      $movie = db_select_movie_by_id($id);
+      return $movie;
+    } else {
+      return false;
+    }
+  }
 
-  return $result;
 
 }
 
