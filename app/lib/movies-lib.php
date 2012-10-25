@@ -10,3 +10,7 @@ function embed($file, $vars) {
   ob_end_clean();
   return $content;
 }
+
+function escapeMssql($string) {
+  return str_replace("'", "''", $string);
+}

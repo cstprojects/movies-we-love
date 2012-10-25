@@ -1,6 +1,6 @@
 <?php
 include("/../data/movies.php");
-include("/../lib/embed.php");
+include("/../lib/movies-lib.php");
 include("/../data/apiclient.php");
 
 $app->get('/movies', function () {
