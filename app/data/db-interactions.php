@@ -15,23 +15,17 @@ function db_lets_connect() {
 
 function db_insert_movie($movie) {
 
-/*   print_r($movie);
-   exit();*/
+  /*  print_r($movie->links->self);
+    exit();*/
 
 //retrieving abridged cast if it exists
 
   if (property_exists($movie, "abridged_cast")) {
-   $abriged_cast = json_encode($movie->abridged_cast);
+    $abriged_cast = json_encode($movie->abridged_cast);
   } else {
     $abriged_cast = '';
   }
 
-//retrieving links if it exists
-  if (property_exists($movie, "links")) {
-    $links = json_encode($movie->links);
-  } else {
-    $links = '';
-  }
 
 //retrieving mpaa_rating if it exists
   if (property_exists($movie, "mpaa_rating")) {
@@ -115,7 +109,7 @@ function db_insert_movie($movie) {
            VALUES(
            '$movie->id',
            '$abriged_cast',
-           '$links',
+           'link',
            '$mpaa_rating',
            '$posters',
            '$ratings',
@@ -131,6 +125,107 @@ function db_insert_movie($movie) {
   if ($result === false) {
     die(print_r(sqlsrv_errors(), true));
   }
+
+
+  $query = "SELECT @@identity";
+  $result = sqlsrv_query($conn, $query);
+  if ($result === false) {
+    die(print_r(sqlsrv_errors(), true));
+  }
+  $result = sqlsrv_fetch_array($result);
+  $last_id = $result[0];
+
+
+  /*
+   * start links insert
+   */
+  $self = '';
+  $alternate = '';
+  $similar = '';
+  $cast = '';
+  $clips = '';
+  $reviews = '';
+
+  if (property_exists($movie->links, 'self')) {
+    $self = $movie->links->self;
+  }
+  if (property_exists($movie->links, 'alternate')) {
+    $alternate = $movie->links->alternate;
+  }
+  if (property_exists($movie->links, 'similar')) {
+    $similar = $movie->links->similar;
+  }
+  if (property_exists($movie->links, 'cast')) {
+    $cast = $movie->links->cast;
+  }
+  if (property_exists($movie->links, 'clips')) {
+    $clips = $movie->links->clips;
+  }
+  if (property_exists($movie->links, 'reviews')) {
+    $reviews = $movie->links->reviews;
+  }
+
+  $query = "INSERT INTO links
+   VALUES(
+  '$last_id',
+  '$self',
+  '$alternate',
+  '$similar',
+  '$cast',
+  '$clips',
+  '$reviews')";
+
+  $result = sqlsrv_query($conn, $query);
+  if ($result === false) {
+    die(print_r(sqlsrv_errors(), true));
+  }
+
+  /*
+   * end links insert
+   */
+
+
+  /*
+   * start posters INSERT
+   */
+
+  $detailed = '';
+  $original = '';
+  $profile = '';
+  $thumbnail = '';
+
+  if (property_exists($movie->posters, 'detailed')) {
+    $detailed = $movie->posters->detailed;
+  }
+  if (property_exists($movie->posters, 'original')) {
+    $original = $movie->posters->original;
+  }
+  if (property_exists($movie->posters, 'profile')) {
+    $profile = $movie->posters->profile;
+  }
+  if (property_exists($movie->posters, 'thumbnail')) {
+    $thumbnail = $movie->posters->thumbnail;
+  }
+
+
+  $query = "INSERT INTO posters
+   VALUES(
+  '$last_id',
+  '$detailed',
+  '$original',
+  '$profile',
+  '$thumbnail')";
+
+  $result = sqlsrv_query($conn, $query);
+  if ($result === false) {
+    die(print_r(sqlsrv_errors(), true));
+  }
+
+  /*
+ * end posters INSERT
+ */
+
+
 }
 
 function db_select_movie_by_id($id) {
@@ -141,5 +236,19 @@ function db_select_movie_by_id($id) {
     $output = sqlsrv_fetch_array($result);
   }
   return $output;
+
+}
+
+function db_search_movies($param = "") {
+  $conn = db_lets_connect();
+  $query = "SELECT * FROM movies where title LIKE '%" . $param . "%';";
+  $result = sqlsrv_query($conn, $query);
+  $output = array();
+  if ($result) {
+    while ($row = sqlsrv_fetch_object($result)) {
+      $output[] = $row;
+    }
+  }
+  return json_encode($output);
 
 }

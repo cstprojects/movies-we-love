@@ -14,3 +14,5 @@ function embed($file, $vars) {
 function escapeMssql($string) {
   return str_replace("'", "''", $string);
 }
+
+

@@ -25,3 +25,9 @@ $app->get('/movies/:id', function ($id) {
   $movie = get_movie_by_id($id);
   print  embed("/../public_html/templates/movie.tpl.php", array('movie' => $movie));
 });
+
+$app->get('/movies/search/:qparam', function($qparam){
+  $result = db_search_movies($qparam);
+  print $result;
+
+});
