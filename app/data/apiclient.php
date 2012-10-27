@@ -34,6 +34,7 @@ function get_movie_by_id($id) {
     $rapi_result = file_get_contents($endpoint);
     if ($rapi_result) {
 
+
       $movie = json_decode($rapi_result);
       db_insert_movie($movie);
       $movie = db_select_movie_by_id($id);

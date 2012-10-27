@@ -15,13 +15,13 @@ function db_lets_connect() {
 
 function db_insert_movie($movie) {
 
-  /*  print_r($movie->links->self);
-    exit();*/
+/*  print_r($movie);
+  exit();*/
 
 //retrieving abridged cast if it exists
 
   if (property_exists($movie, "abridged_cast")) {
-    $abriged_cast = json_encode($movie->abridged_cast);
+    $abriged_cast = escapeMssql(json_encode($movie->abridged_cast));
   } else {
     $abriged_cast = '';
   }
@@ -36,21 +36,21 @@ function db_insert_movie($movie) {
 
 //retrieving posters if it exists
   if (property_exists($movie, "posters")) {
-    $posters = json_encode($movie->posters);
+    $posters = escapeMssql(json_encode($movie->posters));
   } else {
     $posters = '';
   }
 
 //retrieving ratings if it exists
   if (property_exists($movie, "ratings")) {
-    $ratings = json_encode($movie->ratings);
+    $ratings = escapeMssql(json_encode($movie->ratings));
   } else {
     $ratings = '';
   }
 
 //retrieving release_dates if it exists
   if (property_exists($movie, "release_dates")) {
-    $release_dates = json_encode($movie->release_dates);
+    $release_dates = escapeMssql(json_encode($movie->release_dates));
   } else {
     $release_dates = '';
   }
@@ -78,7 +78,7 @@ function db_insert_movie($movie) {
 
 //retrieving genres if it exists
   if (property_exists($movie, "genres")) {
-    $genres = json_encode($movie->genres);
+    $genres = escapeMssql(json_encode($movie->genres));
   } else {
     $genres = '';
   }
@@ -97,6 +97,9 @@ function db_insert_movie($movie) {
   } else {
     $imdb = '';
   }
+
+  /*  print_r($movie);
+    exit();*/
 
 //retrieving critics_consensus if it exists
   if (property_exists($movie, "critics_consensus")) {
@@ -225,6 +228,62 @@ function db_insert_movie($movie) {
  * end posters INSERT
  */
 
+
+  //insert genres
+  if (property_exists($movie, "genres")) {
+    foreach ($movie->genres as $genre) {
+      $query = "INSERT INTO genres
+           VALUES(
+           '$genre')";
+      $result = sqlsrv_query($conn, $query);
+      if ($result === false) {
+        die(print_r(sqlsrv_errors(), true));
+      }
+    }
+  }
+
+
+  //insert directors
+  if (property_exists($movie, "abridged_directors")) {
+    foreach ($movie->abridged_directors[0] as $director) {
+      $query = "SELECT full_name FROM directors
+            WHERE full_name = '$director')";
+      $result = sqlsrv_query($conn, $query);
+      if(!$result){
+        $query = "INSERT INTO directors
+           VALUES(
+           '$director')";
+        $result = sqlsrv_query($conn, $query);
+        if ($result === false) {
+          die(print_r(sqlsrv_errors(), true));
+        }
+      }
+    }
+  }
+
+
+  //insert stars
+  if (property_exists($movie, "abridged_cast")) {
+    foreach ($movie->abridged_cast as $star) {
+      $query = "SELECT star_id FROM stars
+            WHERE star_id = '$star->id')";
+      $result = sqlsrv_query($conn, $query);
+      if(!$result){
+        $query = "INSERT INTO stars
+           VALUES(
+           '$star->name',
+           '$star->id'
+           )";
+        $result = sqlsrv_query($conn, $query);
+        if ($result === false) {
+          die(print_r(sqlsrv_errors(), true));
+        }
+      }
+    }
+  }
+
+
+  sqlsrv_close($conn); //close connection to database
 
 }
 
