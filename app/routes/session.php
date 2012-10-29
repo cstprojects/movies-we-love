@@ -33,3 +33,10 @@ $app->get('/movies/search/:qparam', function($qparam){
   print $result;
 
 });
+
+
+$app->get('/', function(){
+
+  print  embed("/../public_html/templates/main.tpl.php", array('vaime' => 'hey'));
+
+});

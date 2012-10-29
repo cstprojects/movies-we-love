@@ -17,3 +17,4 @@ define("api_url", "http://api.rottentomatoes.com/api/public/v1.0/");
 define("api_key", "8wu69vmaagyc2cge2a74m9tt");
 define("path_to_templates", "/templates");
 define("main_path", "/movies-we-love/public_html/");
+define("absolute_path_to_templates", main_path . path_to_templates);
