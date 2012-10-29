@@ -5,5 +5,26 @@
 </head>
 <body>
 
+<li  class="vaime">vai1</li>
+<li class="vaime">vai1</li>
+<li class="vaime">vai1</li>
+<li class="vaime">vai1</li>
+
+<script>
+    var as = document.getElementsByClassName('vaime');
+
+
+    for (var i = 0; i < as.length; i++) {
+        var a = as[i];
+        a.onclick = function () {
+            (alert('hey'));
+
+        };
+    }
+
+
+</script>
+
+
 </body>
 </html>

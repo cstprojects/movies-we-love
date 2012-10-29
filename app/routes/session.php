@@ -27,7 +27,9 @@ $app->get('/movies/:id', function ($id) {
 });
 
 $app->get('/movies/search/:qparam', function($qparam){
-  $result = db_search_movies($qparam);
+
+/*  $result = db_search_movies($qparam);*/
+  $result = apiclient_search_movies($qparam);
   print $result;
 
 });

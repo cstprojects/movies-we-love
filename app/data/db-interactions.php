@@ -15,13 +15,6 @@ function db_lets_connect() {
 
 function db_insert_movie($movie) {
 
-/*  print_r($movie->abridged_directors);*/
-
-/*  foreach($movie->abridged_directors as $director){
-    print $director->name;
-  }
-  exit();*/
-
 //retrieving abridged cast if it exists
 
   if (property_exists($movie, "abridged_cast")) {
@@ -239,14 +232,19 @@ function db_insert_movie($movie) {
   //insert genres
   if (property_exists($movie, "genres")) {
     foreach ($movie->genres as $genre) {
-      $query = "INSERT INTO genres
+      $query = "SELECT genre_name FROM genres
+            WHERE genre_name = '$genre'";
+      $result = sqlsrv_query($conn, $query);
+      $result = sqlsrv_fetch_array($result);
+      if (!$result) {
+        $query = "INSERT INTO genres
            VALUES(
            '$genre')";
-      $result = sqlsrv_query($conn, $query);
-      if ($result === false) {
-        die(print_r(sqlsrv_errors(), true));
+        $result = sqlsrv_query($conn, $query);
+        if ($result === false) {
+          die(print_r(sqlsrv_errors(), true));
+        }
       }
-
       $query = "INSERT INTO bridge_movies_genres
            VALUES(
            '$movie_last_id',
@@ -255,14 +253,8 @@ function db_insert_movie($movie) {
       if ($result === false) {
         die(print_r(sqlsrv_errors(), true));
       }
-
     }
-
-
   }
-
-
-
 
 
   //insert directors
@@ -271,7 +263,7 @@ function db_insert_movie($movie) {
       $query = "SELECT full_name FROM directors
             WHERE full_name = '$director->name')";
       $result = sqlsrv_query($conn, $query);
-      if(!$result){
+      if (!$result) {
         $query = "INSERT INTO directors
            VALUES(
            '$director->name')";
@@ -300,7 +292,7 @@ function db_insert_movie($movie) {
       $query = "SELECT star_id FROM stars
             WHERE star_id = '$star->id')";
       $result = sqlsrv_query($conn, $query);
-      if(!$result){
+      if (!$result) {
         $query = "INSERT INTO stars
            VALUES(
            '$star->name',
@@ -344,11 +336,8 @@ function db_search_movies($param = "") {
   $query = "SELECT * FROM movies where title LIKE '%" . $param . "%';";
   $result = sqlsrv_query($conn, $query);
   $output = array();
-  if ($result) {
-    while ($row = sqlsrv_fetch_object($result)) {
-      $output[] = $row;
-    }
+  while ($row = sqlsrv_fetch_array($result)) {
+    $output[] = $row;
   }
   return json_encode($output);
-
 }

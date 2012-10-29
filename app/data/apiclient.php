@@ -18,7 +18,11 @@ include("db-interactions.php");
  * returns search results
  */
 
-function generate_rapi_endpoint($api_url, $api_key, $addition = "", $qparams = "") {
+function generate_rapi_endpoint($api_url, $api_key, $addition = "", $page_limit = false, $params = "") {
+  $qparams['q'] = $params;
+  if($page_limit){
+    $qparams['page_limit'] = $page_limit;
+  }
   $qparams['apikey'] = $api_key;
   $endpoint = $api_url . $addition . '?' . http_build_query($qparams);
   return $endpoint;
@@ -43,7 +47,13 @@ function get_movie_by_id($id) {
       return false;
     }
   }
+}
 
+
+function apiclient_search_movies($param = "", $page_limit = "10"){
+  $endpoint = generate_rapi_endpoint(api_url, api_key, "movies/", $page_limit, $param);
+  $rapi_result = file_get_contents($endpoint);
+  return $rapi_result;
 
 }
 
