@@ -15,7 +15,11 @@ function db_lets_connect() {
 
 function db_insert_movie($movie) {
 
-/*  print_r($movie);
+/*  print_r($movie->abridged_directors);*/
+
+/*  foreach($movie->abridged_directors as $director){
+    print $director->name;
+  }
   exit();*/
 
 //retrieving abridged cast if it exists
@@ -40,6 +44,7 @@ function db_insert_movie($movie) {
   } else {
     $posters = '';
   }
+
 
 //retrieving ratings if it exists
   if (property_exists($movie, "ratings")) {
@@ -83,6 +88,7 @@ function db_insert_movie($movie) {
     $genres = '';
   }
 
+
 //retrieving synopsis if it exists
   if (property_exists($movie, "synopsis")) {
     $synopsis = escapeMssql($movie->synopsis);
@@ -108,6 +114,7 @@ function db_insert_movie($movie) {
     $critics_consensus = '';
   }
   $conn = db_lets_connect();
+  //inserting movie
   $query = "INSERT INTO movies
            VALUES(
            '$movie->id',
@@ -136,7 +143,7 @@ function db_insert_movie($movie) {
     die(print_r(sqlsrv_errors(), true));
   }
   $result = sqlsrv_fetch_array($result);
-  $last_id = $result[0];
+  $movie_last_id = $result[0];
 
 
   /*
@@ -170,7 +177,7 @@ function db_insert_movie($movie) {
 
   $query = "INSERT INTO links
    VALUES(
-  '$last_id',
+  '$movie_last_id',
   '$self',
   '$alternate',
   '$similar',
@@ -213,7 +220,7 @@ function db_insert_movie($movie) {
 
   $query = "INSERT INTO posters
    VALUES(
-  '$last_id',
+  '$movie_last_id',
   '$detailed',
   '$original',
   '$profile',
@@ -239,25 +246,50 @@ function db_insert_movie($movie) {
       if ($result === false) {
         die(print_r(sqlsrv_errors(), true));
       }
+
+      $query = "INSERT INTO bridge_movies_genres
+           VALUES(
+           '$movie_last_id',
+           (SELECT id FROM genres WHERE genre_name = '$genre') )";
+      $result = sqlsrv_query($conn, $query);
+      if ($result === false) {
+        die(print_r(sqlsrv_errors(), true));
+      }
+
     }
+
+
   }
+
+
+
 
 
   //insert directors
   if (property_exists($movie, "abridged_directors")) {
-    foreach ($movie->abridged_directors[0] as $director) {
+    foreach ($movie->abridged_directors as $director) {
       $query = "SELECT full_name FROM directors
-            WHERE full_name = '$director')";
+            WHERE full_name = '$director->name')";
       $result = sqlsrv_query($conn, $query);
       if(!$result){
         $query = "INSERT INTO directors
            VALUES(
-           '$director')";
+           '$director->name')";
         $result = sqlsrv_query($conn, $query);
         if ($result === false) {
           die(print_r(sqlsrv_errors(), true));
         }
       }
+
+      $query = "INSERT INTO bridge_movies_directors
+           VALUES(
+           '$movie_last_id',
+           (SELECT id FROM directors WHERE full_name = '$director->name') )";
+      $result = sqlsrv_query($conn, $query);
+      if ($result === false) {
+        die(print_r(sqlsrv_errors(), true));
+      }
+
     }
   }
 
@@ -278,6 +310,15 @@ function db_insert_movie($movie) {
         if ($result === false) {
           die(print_r(sqlsrv_errors(), true));
         }
+      }
+
+      $query = "INSERT INTO bridge_movies_stars
+           VALUES(
+           '$movie_last_id',
+           (SELECT id FROM stars WHERE full_name = '$star->name') )";
+      $result = sqlsrv_query($conn, $query);
+      if ($result === false) {
+        die(print_r(sqlsrv_errors(), true));
       }
     }
   }
