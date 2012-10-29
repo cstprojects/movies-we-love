@@ -1,7 +1,4 @@
 <?php
-
-
-
 function db_lets_connect() {
   $connectionInfo = array("Database" => db_name, "UID" => user_id, "PWD" => password);
   $conn = sqlsrv_connect(server_name, $connectionInfo);

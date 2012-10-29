@@ -10,6 +10,7 @@
 </head>
 <body>
 
+<a href="#"> kio </a>
 
 <script>
     function lookup(inputString) {
