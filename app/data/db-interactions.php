@@ -13,7 +13,6 @@ function db_lets_connect() {
 function db_insert_movie($movie) {
 
 
-
 //retrieving abridged cast if it exists
 
   if (property_exists($movie, "abridged_cast")) {
@@ -108,8 +107,8 @@ function db_insert_movie($movie) {
   $conn = db_lets_connect();
 
   /* Begin the transaction. */
-  if ( sqlsrv_begin_transaction( $conn ) === false ) {
-    die( print_r( sqlsrv_errors(), true ));
+  if (sqlsrv_begin_transaction($conn) === false) {
+    die(print_r(sqlsrv_errors(), true));
   }
 
   //inserting movie
@@ -295,15 +294,13 @@ function db_insert_movie($movie) {
   //insert stars
   if (property_exists($movie, "abridged_cast")) {
     foreach ($movie->abridged_cast as $star) {
+      $star_name = escapeMssql($star->name);
       $query = "SELECT star_id FROM stars
-            WHERE star_id = '$star->id')";
+            WHERE star_id = '$star->id'";
       $result = sqlsrv_query($conn, $query);
+      $result = sqlsrv_fetch_array($result);
       if (!$result) {
-        $query = "INSERT INTO stars
-           VALUES(
-           '$star->name',
-           '$star->id'
-           )";
+        $query = "INSERT INTO stars VALUES('$star_name','$star->id')";
         $result = sqlsrv_query($conn, $query);
         if ($result === false) {
           die(print_r(sqlsrv_errors(), true));
@@ -313,7 +310,7 @@ function db_insert_movie($movie) {
       $query = "INSERT INTO bridge_movies_stars
            VALUES(
            '$movie_last_id',
-           (SELECT id FROM stars WHERE full_name = '$star->name') )";
+           (SELECT id FROM stars WHERE full_name = '$star_name') )";
       $result = sqlsrv_query($conn, $query);
       if ($result === false) {
         die(print_r(sqlsrv_errors(), true));
@@ -321,10 +318,10 @@ function db_insert_movie($movie) {
     }
   }
 
-  if($query) {
-    sqlsrv_commit( $conn );
+  if ($query) {
+    sqlsrv_commit($conn);
   } else {
-    sqlsrv_rollback( $conn );
+    sqlsrv_rollback($conn);
     print_r(sqlsrv_errors(), true);
   }
 
