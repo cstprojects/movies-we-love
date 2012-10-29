@@ -15,6 +15,8 @@ function db_lets_connect() {
 
 function db_insert_movie($movie) {
 
+
+
 //retrieving abridged cast if it exists
 
   if (property_exists($movie, "abridged_cast")) {
@@ -107,6 +109,12 @@ function db_insert_movie($movie) {
     $critics_consensus = '';
   }
   $conn = db_lets_connect();
+
+  /* Begin the transaction. */
+  if ( sqlsrv_begin_transaction( $conn ) === false ) {
+    die( print_r( sqlsrv_errors(), true ));
+  }
+
   //inserting movie
   $query = "INSERT INTO movies
            VALUES(
@@ -261,8 +269,9 @@ function db_insert_movie($movie) {
   if (property_exists($movie, "abridged_directors")) {
     foreach ($movie->abridged_directors as $director) {
       $query = "SELECT full_name FROM directors
-            WHERE full_name = '$director->name')";
+            WHERE full_name = '$director->name'";
       $result = sqlsrv_query($conn, $query);
+      $result = sqlsrv_fetch_array($result);
       if (!$result) {
         $query = "INSERT INTO directors
            VALUES(
@@ -315,6 +324,12 @@ function db_insert_movie($movie) {
     }
   }
 
+  if($query) {
+    sqlsrv_commit( $conn );
+  } else {
+    sqlsrv_rollback( $conn );
+    print_r(sqlsrv_errors(), true);
+  }
 
   sqlsrv_close($conn); //close connection to database
 

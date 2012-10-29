@@ -30,7 +30,7 @@ $app->get('/movies/search/:qparam', function($qparam){
 
 /*  $result = db_search_movies($qparam);*/
   $result = apiclient_search_movies($qparam);
-  print $result;
+  print embed("/../public_html/templates/search-results.tpl.php", array('results' => $result));
 
 });
 
