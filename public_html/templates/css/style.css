@@ -1,3 +1,16 @@
 #suggestions{
     display: none;
 }
+
+.form-search{
+    margin: 0 auto;
+}
+
+.wrapp{
+    width: 1000px;
+    margin:  0 auto;
+}
+
+#suggestions img{
+    height: 91px;
+}

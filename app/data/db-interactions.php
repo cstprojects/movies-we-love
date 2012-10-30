@@ -264,14 +264,16 @@ function db_insert_movie($movie) {
   //insert directors
   if (property_exists($movie, "abridged_directors")) {
     foreach ($movie->abridged_directors as $director) {
+      $director_name = escapeMssql($director->name);
       $query = "SELECT full_name FROM directors
-            WHERE full_name = '$director->name'";
+            WHERE full_name = '$director_name'";
       $result = sqlsrv_query($conn, $query);
       $result = sqlsrv_fetch_array($result);
+
       if (!$result) {
         $query = "INSERT INTO directors
            VALUES(
-           '$director->name')";
+           '$director_name')";
         $result = sqlsrv_query($conn, $query);
         if ($result === false) {
           die(print_r(sqlsrv_errors(), true));
@@ -281,7 +283,7 @@ function db_insert_movie($movie) {
       $query = "INSERT INTO bridge_movies_directors
            VALUES(
            '$movie_last_id',
-           (SELECT id FROM directors WHERE full_name = '$director->name') )";
+           (SELECT id FROM directors WHERE full_name = '$director_name') )";
       $result = sqlsrv_query($conn, $query);
       if ($result === false) {
         die(print_r(sqlsrv_errors(), true));
@@ -321,7 +323,7 @@ function db_insert_movie($movie) {
   if ($query) {
     sqlsrv_commit($conn);
   } else {
-    sqlsrv_rollback($conn);
+    sqlsrv_rollback($conn); //if something wrong rollback!
     print_r(sqlsrv_errors(), true);
   }
 
