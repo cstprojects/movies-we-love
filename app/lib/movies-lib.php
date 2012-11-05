@@ -11,7 +11,7 @@ function embed($file, $vars) {
   return $content;
 }
 
-function escapeMssql($string) {
+function escape_mssql($string) {
   return str_replace("'", "''", $string);
 }
 

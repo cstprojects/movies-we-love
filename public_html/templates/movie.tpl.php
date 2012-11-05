@@ -6,10 +6,11 @@
 ?>
 <?php
 
-
 if(array_key_exists('posters', $movie)){
   $posters = $movie['posters'];
 }
+
+
 ?>
 
 <!DOCTYPE html>

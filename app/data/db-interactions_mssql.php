@@ -6,7 +6,7 @@ function db_insert_movie($movie) {
 //retrieving abridged cast if it exists
 
   if (property_exists($movie, "abridged_cast")) {
-    $abriged_cast = escapeMssql(json_encode($movie->abridged_cast));
+    $abriged_cast = escape_mssql(json_encode($movie->abridged_cast));
   } else {
     $abriged_cast = '';
   }
@@ -14,14 +14,14 @@ function db_insert_movie($movie) {
 
 //retrieving mpaa_rating if it exists
   if (property_exists($movie, "mpaa_rating")) {
-    $mpaa_rating = escapeMssql($movie->mpaa_rating);
+    $mpaa_rating = escape_mssql($movie->mpaa_rating);
   } else {
     $mpaa_rating = '';
   }
 
 //retrieving posters if it exists
   if (property_exists($movie, "posters")) {
-    $posters = escapeMssql(json_encode($movie->posters));
+    $posters = escape_mssql(json_encode($movie->posters));
   } else {
     $posters = '';
   }
@@ -29,14 +29,14 @@ function db_insert_movie($movie) {
 
 //retrieving ratings if it exists
   if (property_exists($movie, "ratings")) {
-    $ratings = escapeMssql(json_encode($movie->ratings));
+    $ratings = escape_mssql(json_encode($movie->ratings));
   } else {
     $ratings = '';
   }
 
 //retrieving release_dates if it exists
   if (property_exists($movie, "release_dates")) {
-    $release_dates = escapeMssql(json_encode($movie->release_dates));
+    $release_dates = escape_mssql(json_encode($movie->release_dates));
   } else {
     $release_dates = '';
   }
@@ -50,7 +50,7 @@ function db_insert_movie($movie) {
 
 //retrieving title if it exists
   if (property_exists($movie, "title")) {
-    $title = escapeMssql($movie->title);
+    $title = escape_mssql($movie->title);
   } else {
     $title = '';
   }
@@ -64,7 +64,7 @@ function db_insert_movie($movie) {
 
 //retrieving genres if it exists
   if (property_exists($movie, "genres")) {
-    $genres = escapeMssql(json_encode($movie->genres));
+    $genres = escape_mssql(json_encode($movie->genres));
   } else {
     $genres = '';
   }
@@ -72,7 +72,7 @@ function db_insert_movie($movie) {
 
 //retrieving synopsis if it exists
   if (property_exists($movie, "synopsis")) {
-    $synopsis = escapeMssql($movie->synopsis);
+    $synopsis = escape_mssql($movie->synopsis);
   } else {
     $synopsis = '';
   }
@@ -90,7 +90,7 @@ function db_insert_movie($movie) {
 
 //retrieving critics_consensus if it exists
   if (property_exists($movie, "critics_consensus")) {
-    $critics_consensus = escapeMssql($movie->critics_consensus);
+    $critics_consensus = escape_mssql($movie->critics_consensus);
   } else {
     $critics_consensus = '';
   }
@@ -226,7 +226,7 @@ function db_insert_movie($movie) {
   //insert genres
   if (property_exists($movie, "genres")) {
     foreach ($movie->genres as $genre) {
-      $genre = escapeMssql($genre);
+      $genre = escape_mssql($genre);
       $query = "SELECT genre_name FROM genres
             WHERE genre_name = '$genre'";
       $result = sqlsrv_query($conn, $query);
@@ -255,7 +255,7 @@ function db_insert_movie($movie) {
   //insert directors
   if (property_exists($movie, "abridged_directors")) {
     foreach ($movie->abridged_directors as $director) {
-      $director_name = escapeMssql($director->name);
+      $director_name = escape_mssql($director->name);
       $query = "SELECT full_name FROM directors
             WHERE full_name = '$director_name'";
       $result = sqlsrv_query($conn, $query);
@@ -287,7 +287,7 @@ function db_insert_movie($movie) {
   //insert stars
   if (property_exists($movie, "abridged_cast")) {
     foreach ($movie->abridged_cast as $star) {
-      $star_name = escapeMssql($star->name);
+      $star_name = escape_mssql($star->name);
       $query = "SELECT star_id FROM stars
             WHERE star_id = '$star->id'";
       $result = sqlsrv_query($conn, $query);

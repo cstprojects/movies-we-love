@@ -1,5 +1,6 @@
 <?php
 
+
 function db_insert_movie($movie) {
 
 
@@ -319,7 +320,7 @@ function db_insert_movie($movie) {
         $query = "INSERT INTO stars (full_name, star_id) VALUES('$star_name','$star->id')";
         $result = mysql_query($query);
         if ($result === false) {
-          die(print_r(mysql_error() . "stars insert" , true));
+          die(print_r(mysql_error() . "stars insert", true));
         }
       }
 
@@ -350,26 +351,22 @@ function db_select_movie_by_id($id) {
   mysql_db_lets_connect();
   $result_movie = mysql_query("SELECT * FROM movies where movie_id = $id");
 
-  if ($result_movie) {
+  if (mysql_num_rows($result_movie) != 0) {
     $output['movie'] = mysql_fetch_array($result_movie);
     $movie_id = $output['movie']['id'];
-    $result_posters = mysql_query("SELECT * FROM posters WHERE movies_id = $movie_id");
-    if( $result_posters){
-
-      $output['posters'] = mysql_fetch_array($result_posters);
+    if ($posters = get_posters($movie_id)) {
+      $output['posters'] = $posters;
     }
   }
+  mysql_close();
   return $output;
 
 }
 
-function db_search_movies($param = "") {
-  $conn = mssql_db_lets_connect();
-  $query = "SELECT * FROM movies where title LIKE '%" . $param . "%';";
-  $result = sqlsrv_query($conn, $query);
-  $output = array();
-  while ($row = sqlsrv_fetch_array($result)) {
-    $output[] = $row;
+function get_posters($movies_id) {
+  $result_posters = mysql_query("SELECT * FROM posters WHERE movies_id = $movies_id");
+  if (mysql_num_rows($result_posters) != 0) {
+    return mysql_fetch_array($result_posters);
   }
-  return json_encode($output);
+  return false;
 }
