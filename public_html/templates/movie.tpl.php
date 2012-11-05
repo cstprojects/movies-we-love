@@ -4,7 +4,13 @@
   * expected object is $movie
   */
 ?>
-<?php $posters = json_decode($movie['posters']); ?>
+<?php
+
+
+if(array_key_exists('posters', $movie)){
+  $posters = $movie['posters'];
+}
+?>
 
 <!DOCTYPE html>
 <html>
@@ -14,9 +20,9 @@
 </head>
 <body>
 
-<h3><?php print $movie['title'] ?></h3>
-<p><?php print $movie['synopsis'] ?></p>
-<img src="<?php print $posters->original; ?>">
+<h3><?php print $movie['movie']['title'] ?></h3>
+<p><?php print $movie['movie']['synopsis'] ?></p>
+<img src="<?php print $posters['original']; ?>">
 
 </body>
 </html>

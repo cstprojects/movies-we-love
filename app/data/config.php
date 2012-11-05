@@ -1,13 +1,21 @@
 <?php
 
 /*
- * database connection
+ * MSSQL database connection
  */
-define("server_name", "MERINSPIRON");
+/*define("server_name", "MERINSPIRON");
 define("db_name", "movies");
 define("user_id", "sa");
-define("password", "12OtZa34");
+define("password", "12OtZa34");*/
 /*$connectionInfo = array( "Database"=>"movies", "UID"=>"sa", "PWD"=>"12OtZa34");*/
+
+/*
+ * MySQL database connection
+ */
+
+define("server", "127.0.0.1");
+define("user", "root");
+define("password", "");
 
 
 /*
