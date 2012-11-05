@@ -2,10 +2,11 @@
 /*
  * embed() implements function for templating
  */
-function embed($file, $vars) {
+function embed($file_name, $vars) {
   ob_start();
   extract($vars, EXTR_SKIP);
-  include($file);
+  $file_path = sprintf('%s/%s.tpl.php', TEMPLATES_DIR, $file_name);
+  include($file_path);
   $content = ob_get_contents();
   ob_end_clean();
   return $content;

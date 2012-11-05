@@ -6,7 +6,7 @@ include("/../data/apiclient.php");
 $app->get('/movies', function () {
   $movies = getmovies();
 
-  print  embed("/../public_html/templates/movies.tpl.php", array('vars' => $movies));
+  print  embed("movies", array('vars' => $movies));
 });
 
 
@@ -23,20 +23,20 @@ $app->get('/search', function () {
  */
 $app->get('/movies/:id', function ($id) {
   $movie = get_movie_by_id($id);
-  print  embed("/../public_html/templates/movie.tpl.php", array('movie' => $movie));
+  print  embed("movie", array('movie' => $movie));
 });
 
 $app->get('/movies/search/:qparam', function($qparam){
 
 /*  $result = db_search_movies($qparam);*/
   $result = apiclient_search_movies($qparam);
-  print embed("/../public_html/templates/search-results.tpl.php", array('results' => json_decode($result)));
+  print embed("search-results", array('results' => json_decode($result)));
 
 });
 
 
 $app->get('/', function(){
 
-  print  embed("/../public_html/templates/main.tpl.php", array('vaime' => 'hey'));
+  print  embed("main", array('vaime' => 'hey'));
 
 });
