@@ -236,6 +236,7 @@ function db_insert_movie($movie) {
   //insert genres
   if (property_exists($movie, "genres")) {
     foreach ($movie->genres as $genre) {
+      $genre = escapeMssql($genre);
       $query = "SELECT genre_name FROM genres
             WHERE genre_name = '$genre'";
       $result = sqlsrv_query($conn, $query);
