@@ -20,7 +20,7 @@ include("db-interactions.php");
 
 function generate_rapi_endpoint($api_url, $api_key, $addition = "", $page_limit = false, $params = "") {
   $qparams['q'] = $params;
-  if($page_limit){
+  if ($page_limit) {
     $qparams['page_limit'] = $page_limit;
   }
   $qparams['apikey'] = $api_key;
@@ -50,7 +50,7 @@ function get_movie_by_id($id) {
 }
 
 
-function apiclient_search_movies($param = "", $page_limit = "10"){
+function apiclient_search_movies($param = "", $page_limit = "10") {
   $endpoint = generate_rapi_endpoint(api_url, api_key, "movies/", $page_limit, $param);
   $rapi_result = file_get_contents($endpoint);
   return $rapi_result;

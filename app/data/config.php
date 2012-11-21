@@ -13,7 +13,7 @@ define("password", "12OtZa34");*/
  * MySQL database connection
  */
 
-define("server", "127.0.0.1");
+define("server", "localhost");
 define("user", "root");
 define("password", "");
 
@@ -24,6 +24,6 @@ define("password", "");
 define("api_url", "http://api.rottentomatoes.com/api/public/v1.0/");
 define("api_key", "8wu69vmaagyc2cge2a74m9tt");
 define("path_to_templates", "/templates");
-define("main_path", "/movies-we-love/public_html/");
-define("absolute_path_to_templates", main_path . path_to_templates);
+define("main_path", "/");
+define("absolute_path_to_templates", path_to_templates);
 define("TEMPLATES_DIR","/../public_html/templates/");
