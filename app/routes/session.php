@@ -5,8 +5,8 @@ include("/../data/apiclient.php");
 
 $app->get('/movies', function () {
   $movies = getmovies();
-
   print  embed("movies", array('vars' => $movies));
+
 });
 
 
@@ -23,19 +23,20 @@ $app->get('/search', function () {
  */
 $app->get('/movies/:id', function ($id) {
   $movie = get_movie_by_id($id);
+  print  embed("top", array('vars' => '1'));
   print  embed("movie", array('movie' => $movie));
 });
 
-$app->get('/movies/search/:qparam', function($qparam){
+$app->get('/movies/search/:qparam', function ($qparam) {
 
-/*  $result = db_search_movies($qparam);*/
+  /*  $result = db_search_movies($qparam);*/
   $result = apiclient_search_movies($qparam);
   print embed("search-results", array('results' => json_decode($result)));
 
 });
 
 
-$app->get('/', function(){
+$app->get('/', function () {
 
   print  embed("main", array('vaime' => 'hey'));
 

@@ -1,3 +1,11 @@
+jQuery(document).ready(function(){
+
+    $('#search').bind('keydown',function(){
+        lookup(this.value);
+    });
+});
+
+
 function lookup(inputString) {
     if(inputString.length == 0) {
         $('#suggestions').fadeOut(); // Hide the suggestions box

@@ -37,23 +37,18 @@ function mysql_db_lets_connect() {
   }
 
 
-
 }
 
 
-
-function begin()
-{
+function begin() {
   mysql_query("BEGIN");
 }
 
-function commit()
-{
+function commit() {
   mysql_query("COMMIT");
 }
 
-function rollback()
-{
+function rollback() {
   mysql_query("ROLLBACK");
 }
 
