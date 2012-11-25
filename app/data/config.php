@@ -16,6 +16,8 @@ define("password", "12OtZa34");*/
 define("server", "localhost");
 define("user", "root");
 define("password", "");
+define("DB_NAME", "movies");
+
 
 
 /*

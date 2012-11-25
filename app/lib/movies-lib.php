@@ -30,10 +30,11 @@ function mssql_db_lets_connect() {
 function mysql_db_lets_connect() {
   $conn = mysql_connect(server, user, password);
   if ($conn) {
-    mysql_select_db("movies") or die(mysql_error());
+    mysql_select_db(DB_NAME) or die(mysql_error());
     return $conn;
   } else {
     die('Could not connect: ' . mysql_error());
+    return false;
   }
 
 
