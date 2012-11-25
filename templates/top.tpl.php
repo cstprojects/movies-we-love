@@ -2,8 +2,8 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" href="<?php print absolute_path_to_templates; ?>/css/bootstrap.css">
-    <link rel="stylesheet" href="<?php print absolute_path_to_templates; ?>/css/style.css">
+    <link rel="stylesheet" href="<?php print REL_PATH_TO_TEMPLATES; ?>/css/bootstrap.css">
+    <link rel="stylesheet" href="<?php print REL_PATH_TO_TEMPLATES; ?>/css/style.css">
 </head>
 <body>
 

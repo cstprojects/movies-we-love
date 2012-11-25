@@ -1,6 +1,6 @@
 jQuery(document).ready(function(){
 
-    $('#search').bind('keydown',function(){
+    $('#search').bind('keyup',function(){
         lookup(this.value);
     });
 });

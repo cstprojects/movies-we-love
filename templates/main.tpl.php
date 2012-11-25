@@ -2,8 +2,8 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" href="<?php print absolute_path_to_templates; ?>/css/bootstrap.css">
-    <link rel="stylesheet" href="<?php print absolute_path_to_templates; ?>/css/style.css">
+    <link rel="stylesheet" href="<?php print REL_PATH_TO_TEMPLATES; ?>/css/bootstrap.css">
+    <link rel="stylesheet" href="<?php print REL_PATH_TO_TEMPLATES; ?>/css/style.css">
 </head>
 <body>
 
@@ -23,9 +23,9 @@
     var path = "<?php print main_path; ?>";
 </script>
 
-<script src="<?php print absolute_path_to_templates; ?>/js/jquery-1.8.2.min.js"></script>
-<script src="<?php print absolute_path_to_templates; ?>/js/bootstrap.js"></script>
-<script src="<?php print absolute_path_to_templates; ?>/js/lookup.js"></script>
+<script src="<?php print REL_PATH_TO_TEMPLATES; ?>/js/jquery-1.8.2.min.js"></script>
+<script src="<?php print REL_PATH_TO_TEMPLATES; ?>/js/bootstrap.js"></script>
+<script src="<?php print REL_PATH_TO_TEMPLATES; ?>/js/lookup.js"></script>
 
 
 </body>
